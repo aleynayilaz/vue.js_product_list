@@ -4,12 +4,14 @@
     <div class="cart">
       <h3>Basket</h3>
       <ul>
-        <li v-for="item in cartItems" :key="item.id">{{ item.title }}</li>
+        <li v-for="item in cartItems" :key="item.id">
+          {{ item.title }} - {{ item.count }}
+        </li>
       </ul>
       <p v-if="cartItems.length == 0">Your basket is empty...</p>
     </div>
     <Product
-      @addToBasket="cartItems.push($event)"
+      @addToBasket="addToCard(product)"
       :product="product"
       v-for="product in productList"
       :key="product.id"
@@ -32,26 +34,36 @@ export default {
           id: 1,
           title: "Mackbook Pro",
           price: 100,
-          count: 0,
+          count: 1,
           description: "Explain 1",
         },
         {
           id: 2,
           title: "Iphone",
           price: 50,
-          count: 100,
+          count: 1,
           description: "Explain 2",
         },
         {
           id: 3,
           title: "Keyboard",
           price: 10,
-          count: 1000,
+          count: 1,
           description: "Explain 3",
         },
       ],
       cartItems: [],
     };
+  },
+  methods: {
+    addToCard(product) {
+      let indx = this.cartItems.findIndex((item) => item.id === product.id);
+      if (indx === -1) {
+        this.cartItems.push(product);
+      } else {
+        this.cartItems[indx].count++;
+      }
+    },
   },
 };
 </script>
